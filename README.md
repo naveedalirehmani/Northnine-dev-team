@@ -1,0 +1,3 @@
+# Northnine-dev-team
+
+Welcome to the NorthNine Intern Development Repository! This repository serves as a combined platform for all NorthNine interns to collaborate on development projects and share their notes and resources This repository is dedicated to facilitating the growth and learning of interns at NorthNine. Interns can work on various development projects, gain hands-on experience, and contribute to real-world solutions. Additionally, interns can use this repository to keep track of their progress, share valuable insights, and learn from each other's experiences.
