@@ -1,7 +1,7 @@
 const boxes = document.querySelectorAll(".box");
-const resetBtn = document.querySelector(".reset-btn");
-const newGameBtn = document.querySelector("#new-btn");
-const msgContainer = document.querySelector(".msg-container");
+const resetButton = document.querySelector(".reset-btn");
+const newGameButton = document.querySelector("#new-btn");
+const messageContainer = document.querySelector(".msg-container");
 const msg = document.querySelector("#msg");
 
 function playMusic(sound) {
@@ -24,7 +24,7 @@ let winPatterns = [
 const resetGame = () => {
   turno = true;
   enableBoxes();
-  msgContainer.classList.add("hide");
+  messageContainer.classList.add("hide");
 };
 
 const disableBoxes = () => {
@@ -42,13 +42,13 @@ const enableBoxes = () => {
 
 const showWinner = (winner) => {
   msg.innerText = `Congratulations! your the winner of the match ${winner} `;
-  msgContainer.classList.remove("hide");
+  messageContainer.classList.remove("hide");
   disableBoxes();
 };
 
 const showDraw = () => {
-  msg.innerText = "The game is a draw trty again!";
-  msgContainer.classList.remove("hide");
+  msg.innerText = "The game is a draw try again";
+  messageContainer.classList.remove("hide");
   disableBoxes();
 };
 
@@ -61,7 +61,7 @@ const checkWinner = () => {
     if (pos1val !== "" && pos2val !== "" && pos3val !== "") {
       if (pos1val === pos2val && pos2val === pos3val) {
         showWinner(pos1val);
-        playMusic("/sound/winning sound.mp3");
+        playMusic("./sound/winning sound.mp3");
         return true;
       }
     }
@@ -88,14 +88,14 @@ boxes.forEach((box) => {
       turno = true;
     }
     box.disabled = true;
-    playMusic("/sound/punch.mp3");
+    playMusic("./sound/punch.mp3");
 
     if (!checkWinner() && checkDraw()) {
       showDraw();
-      playMusic("/sound/wrong.mp3");
+      playMusic("./sound/wrong.mp3");
     }
   });
 });
 
-newGameBtn.addEventListener("click", resetGame);
-resetBtn.addEventListener("click", resetGame);
+newGameButton.addEventListener("click", resetGame);
+resetButton.addEventListener("click", resetGame);
