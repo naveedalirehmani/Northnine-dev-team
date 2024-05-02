@@ -29,7 +29,7 @@ function App() {
 
   const toggleFinshed = (e) => {
     setshowFinshed(!showFinshed)
-  }
+  };
 
 
   const handleEdit = (id) => {
@@ -59,8 +59,7 @@ function App() {
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && todo.trim() !== '') {
-      handleAdd()
-        ;
+      handleAdd();
     }
   };
 
