@@ -3,11 +3,13 @@ import Navbar from './components/Navbar';
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { v4 as uuidv4 } from 'uuid';
+import './App.css'
 
 function App() {
   const [todo, setTodo] = useState('');
   const [todos, setTodos] = useState([]);
-  const [showFinshed, setshowFinshed] = useState(true)
+  const [showFinshed, setshowFinshed] = useState(true);
+  const [editedTodoId, setEditedTodoId] = useState(null); // State to store the ID of the edited todo
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -28,16 +30,37 @@ function App() {
   };
 
   const toggleFinshed = (e) => {
-    setshowFinshed(!showFinshed)
+    setshowFinshed(!showFinshed);
   };
-
 
   const handleEdit = (id) => {
     const editedTodo = todos.find(todo => todo.id === id);
     setTodo(editedTodo.todo);
-    const updatedTodos = todos.filter(todo => todo.id !== id);
-    setTodos(updatedTodos);
+    setEditedTodoId(id); 
   };
+  
+  const handleSaveEdit = () => {
+    const updatedTodos = todos.map(item =>
+      item.id === editedTodoId ? { ...item, todo: todo.trim() } : item
+    );
+    setTodos(updatedTodos);
+    setEditedTodoId(null);
+    setTodo('')
+    saveTodos();
+  };
+  
+  const handleAdd = () => {
+    if (todo.trim() !== '') {
+      if (editedTodoId !== null) {
+        handleSaveEdit();
+      } else {
+        setTodos([...todos, { id: uuidv4(), todo: todo.trim(), isCompleted: false }]);
+        setTodo('');
+        saveTodos();
+      }
+    }
+  };
+  
 
   const handleDelete = (id) => {
     const updatedTodos = todos.filter(todo => todo.id !== id);
@@ -45,13 +68,6 @@ function App() {
     saveTodos();
   };
 
-  const handleAdd = () => {
-    if (todo.trim() !== '') {
-      setTodos([...todos, { id: uuidv4(), todo, isCompleted: false }]);
-      setTodo('');
-      saveTodos();
-    }
-  };
 
   const handleChange = (e) => {
     setTodo(e.target.value);
@@ -59,9 +75,15 @@ function App() {
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && todo.trim() !== '') {
-      handleAdd();
+      if (editedTodoId !== null) {
+        handleSaveEdit();
+      } else {
+        handleAdd();
+      }
     }
   };
+  
+  
 
   const handleCheckbox = (id) => {
     const updatedTodos = todos.map(todo =>
@@ -91,9 +113,9 @@ function App() {
         <h2 className='text-lg font-bold'>Your Todo</h2>
         <div className="todos">
           {todos.length === 0 && <div className='m-5'>No todos to display</div>}
-
-          {todos.map(item => {
-            return (showFinshed || !item.isCompleted) && <div key={item.id} className="todo flex justify-between my-3 w-full">
+          {todos.map(item => (
+            (showFinshed || !item.isCompleted) &&
+            <div key={item.id} className={`todo flex justify-between my-3 w-full ${editedTodoId === item.id ? 'edited-todo' : ''}`}>
               <div className='flex gap-5'>
                 <input
                   name={item.id}
@@ -104,7 +126,6 @@ function App() {
                 />
                 <div className={` ${item.isCompleted ? "line-through" : ""}`}>
                   <p className='w-20 md:w-72 overflow-hidden overflow-ellipsis whitespace-nowrap'>{item.todo}</p>
-                  
                 </div>
               </div>
               <div className="button flex">
@@ -112,7 +133,7 @@ function App() {
                 <button onClick={() => handleDelete(item.id)} className='bg-violet-800 hover:bg-violet-950  p-2 py-1 mx-2  text-lg font-bold text-white rounded-md'><MdDelete /></button>
               </div>
             </div>
-          })}
+          ))}
         </div>
       </div>
     </>
